@@ -1,0 +1,48 @@
+				Regras:
+
+Composição:
+O jogo Lebre e tartaruga é cosposto por: 1 Tabuleiro, 5 Corredores, 1 Baralho de 81 cartas, 1 baralho de aposta com uma carta de cada corredor 
+	Tabuleiro: constituído pelo espaço da partida, 9 espaços de caminho 'normais' + 2
+	espaços de caminho com ribeiro e o espaço da chegada.
+	Corredores: uma marca de cor diferente para cada corredor (corredor != jogador),
+	Cartas de aposta: uma carta de cada animal, todas diferentes.
+	Cartas de corrida: 81 cartas distribuídas pelos 5 animais: 18 para a lebre, 17 para a
+	tartaruga, 16 para o lobo, 15 para a raposa e 15 para o cordeiro. Das cartas de lobo 3
+	têm uma marca especial – o lobo a uivar.
+	Uma marca para o 1º Jogador da ronda.
+Objetivo:
+O objetivo do jogo é obter o maior número de pontos possível pelas apostas realizadas. Os
+pontos obtidos são a soma dos pontos obtidos por cada uma das nossas apostas.
+	1º lugar – 5 pontos
+	2º lugar – 3 pontos
+	3º lugar – 2 pontos
+	Restantes – 0 pontos
+
+Setup:
+
+Os jogadores são escolhidos aleatoriamente, e o primeiro jogador é determinado.
+Cada jogador começa com uma mão inicial de 6 cartas.
+Fases do Jogo:
+O jogo é dividido em rondas, cada uma composta por duas fases: a fase de influência e a fase de corrida.
+
+Fase de Influência:
+
+Os jogadores jogam cartas da sua mão no mínimo 1, máximo 4, seguindo certas restrições.
+Restrições incluem limites no número total de cartas na mesa, no número de cartas por animal e a necessidade de jogar cartas do mesmo tipo (corredor) animal.
+O turno de um jogador termina, e a mão é reabastecida para 6 cartas.
+Se o deck de corrida acabar, as cartas descartadas são embaralhadas para formar um novo deck.
+Fase de Corrida:
+
+Os animais se movem na pista de corrida com base na ordem de movimento, características específicas e cartas jogadas durante a fase de influência.
+Alguns animais têm condições especiais de movimento.
+Condições específicas, como a presença de cartas de lobo, podem afetar o movimento dos animais.
+Condições de Fim de Jogo:
+O jogo termina quando 3 ou mais animais atravessam a linha de chegada. Os jogadores somam pontos com base em suas apostas nos animais que cruzaram a linha de chegada na ordem correta. O jogador com mais pontos vence. Em caso de empate, o desempate ocorre com base nos pontos das apostas iniciais.
+
+Espero que estas regras resumidas ajudem a entender como jogar este interessante jogo de corrida estratégica!
+
+
+
+
+
+
