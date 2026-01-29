@@ -1,8 +1,127 @@
 #include "lab.h"
 #include <stdbool.h>
 
+typedef struct Baralho
+{
+	char cartas[81];
+	char des[81]; //deck descarte
+	char apos[5]; //deck de aposta
+	int size;
+	int maxsize;
+}baralho;
+typedef struct BaralhoAposta
+{
+	int maxsize;
+	int size;
+	char cartas[8];
+	char apostaIni; //aposta incial dos jogadores
+	char apostaFin; //aposta feita pelos jogadores 
+}Baposta;
+typedef struct BaralhoDescarte
+{
+	int maxsize;
+	int size;
+	baralho descarte;
+}descarte;
+typedef struct pistaEpodio {
+	char tipo;
+	int posicao;
+	bool podio;
+} Personagem;
+typedef struct JOGADOR
+{
+	char name[30];
+	int type;
+	baralho mao;
+	Baposta apostas;
+	int pontos;
+	char jogar;
+
+}jogadorH;
+typedef struct BOT
+{
+	char name[30];
+	int type;
+	baralho mao;
+	Baposta apostas;
+	int pontos;
+	char jogar;
+}jogadorNH;
 
 
+void IniB(baralho* myB)
+{
+	/* l- lebre
+	   w- lobo
+	   W- lobo especial
+	   t- tartaruga
+	   r- raposa
+	   c- cordeiro
+	*/
+	int i = 0;
+	myB->size = 0;
+	for (i = 0; i < 18; i++)
+	{
+		myB->cartas[i] = 'l';
+		myB->size++;
+		if (i == 16)
+		{
+			myB->apos[0] = 'l';
+		}
+	}
+	for (i = 18; i < 35; i++)
+	{
+		myB->cartas[i] = 't';
+		myB->size++;
+		if (i == 33)
+		{
+			myB->apos[1] = 't';
+		}
+	}
+	for (i = 35; i < 48; i++)
+	{
+		myB->cartas[i] = 'w';
+		myB->size++;
+		if (i == 46)
+		{
+			myB->apos[2] = 'w';
+		}
+	}
+	for (i = 48; i < 51; i++)
+	{
+		myB->cartas[i] = 'W';
+		myB->size++;
+	}
+	for (i = 51; i < 66; i++)
+	{
+		myB->cartas[i] = 'r';
+		myB->size++;
+		if (i == 64)
+		{
+			myB->apos[3] = 'r';
+		}
+	}
+	for (i = 66; i < 81; i++)
+	{
+		myB->cartas[i] = 'c';
+		myB->size++;
+		if (i == 79)
+		{
+			myB->apos[4] = 'c';
+		}
+	}
+}
+
+BaralharBaralho()
+{
+
+}
+
+
+NovoJogo()
+{
+
+}
 
 abrirFicheiroler(const char* filename)
 {
@@ -26,7 +145,6 @@ abrirFicheiroler(const char* filename)
 	fclose(file);
 }
 
-
 Ecra_Ini()
 {
 	setForeColor(MY_COLOR_LIGTH_GREEN);
@@ -44,7 +162,6 @@ Ecra_Ini()
 }
 Menu()
 {
-	setlocale(LC_ALL, "Portuguese");
 	char opc;
 	do
 	{
@@ -71,6 +188,7 @@ Menu()
 		{
 			abrirFicheiroler("regras.txt");
 			system("pause");
+			Menu();
 			break;
 		}
 		case '4':
@@ -83,8 +201,8 @@ Menu()
 
 int main()
 {
-	
-	
+
+	setlocale(LC_ALL, "Portuguese");
 	Ecra_Ini();
 	Menu();
 	

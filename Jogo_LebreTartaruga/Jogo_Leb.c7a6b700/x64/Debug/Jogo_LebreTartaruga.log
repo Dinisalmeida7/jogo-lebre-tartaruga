@@ -1,3 +1,3 @@
 ﻿  Jogo.c
-C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(14,3): warning C4033: 'abrirFicheiroler' must return a value
+C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(12,3): warning C4033: 'abrirFicheiroler' must return a value
   Jogo_LebreTartaruga.vcxproj -> C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\x64\Debug\Jogo_LebreTartaruga.exe
