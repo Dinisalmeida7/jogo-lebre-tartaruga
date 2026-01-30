@@ -1,4 +1,4 @@
-				Regras:
+													Regras
 
 Composição:
 O jogo Lebre e tartaruga é composto por: 1 Tabuleiro, 5 Corredores, 1 Baralho de 81 cartas, 1 baralho de aposta com uma carta de cada corredor 

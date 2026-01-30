@@ -49,11 +49,34 @@ typedef struct BOT
 }jogadorNH;
 
 
-void IniB(baralho* myB)
+//FUNÇÕES DE SUPORTE
+PrintB(baralho myB)
 {
+	int i = 0;
+	for (i = 0; i < 81; i++)//81---> myB.size
+	{
+		printf("%c,", myB.cartas[i]);
+	}
+	printf("\n");
+}
+PrintBA(baralho myB)
+{
+	int i = 0;
+	for (i = 0; i < 5; i++)//81---> myB.size
+	{
+		printf(" %c", myB.apos[i]);
+	}
+}
+
+
+//FUNÇÕES DE INICIAÇÃO
+IniB(baralho* myB)
+{
+	//INICIAR BARALHO
+
 	/* l- lebre
-	   w- lobo
-	   W- lobo especial
+	   w- lobo 
+	   L- lobo especial
 	   t- tartaruga
 	   r- raposa
 	   c- cordeiro
@@ -89,7 +112,7 @@ void IniB(baralho* myB)
 	}
 	for (i = 48; i < 51; i++)
 	{
-		myB->cartas[i] = 'W';
+		myB->cartas[i] = 'L';
 		myB->size++;
 	}
 	for (i = 51; i < 66; i++)
@@ -111,15 +134,87 @@ void IniB(baralho* myB)
 		}
 	}
 }
-
-BaralharBaralho()
+IniJ1(jogadorH* j1, baralho* myB)
 {
+	gotoxy(0, 7); printf("Introduza o nome do jogador1: ");
+	(void)scanf("%s´", j1->name);
+	int i;
+	j1->mao.maxsize = 7;
+	j1->mao.size = 0;
+	for (i = 0; i < j1->mao.maxsize; i++)
+	{
+		j1->mao.size++;
+		j1->mao.cartas[i] = myB->cartas[i];
+		myB->cartas[i] = 'x';
+		if (i == j1->mao.maxsize)
+		{
+			printf("%c", j1->mao.cartas[i]);
+
+		}
+		else
+			printf("%c,", j1->mao.cartas[i]);
+	}
 
 }
+IniJ2(jogadorH* j1, jogadorNH* j2, baralho* myB)
+{
+	gotoxy(0, 7); printf("Introduza o nome do Playe Two: ");
+	(void)scanf("%s", j2->name);
+	int i;
+	int posicao_maoB = 0;;
+	j2->mao.maxsize = 7;
+	j2->mao.size = 0;
+	for (i = 0; i < j1->mao.maxsize + j2->mao.maxsize; i++)
+	{
+		if (myB->cartas[i] != 'x')
+		{
+			j2->mao.cartas[posicao_maoB] = myB->cartas[i];
+			myB->cartas[i] = 'x';
+			posicao_maoB++;
+			j2->mao.size++;
+			if (posicao_maoB == j2->mao.maxsize)
+			{
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < j2->mao.maxsize; i++)
+	{
+		if (i == j2->mao.maxsize)
+		{
+			printf("%c", j2->mao.cartas[i]);
+
+		}
+		else
+			printf("%c,", j2->mao.cartas[i]);
+	}
+
+
+}
+
+//FUNÇÕES DE CARTAS
+BaralharBaralho(baralho* myb)
+{
+	int i;
+	if (myb->size == 0) { return; }
+	for (i = 0; i < myb->size; i++)
+	{
+		trocaChars(&(myb->cartas[i]), &(myb->cartas[rand() % myb->size]));
+	}
+}
+
+
+
 
 
 NovoJogo()
 {
+
+	baralho myb;
+
+	IniB(&myb);
+	BaralharBaralho(&myb);
+
 
 }
 
@@ -148,9 +243,8 @@ abrirFicheiroler(const char* filename)
 Ecra_Ini()
 {
 	setForeColor(MY_COLOR_LIGTH_GREEN);
-	//gotoxy(45, 13); printf("jogo da Lebre e Tartaruga\n");
 	
-
+	
 	showRectAt(40, 8, 36, 7);
 	gotoxy(50, 10);
 	printf("LEBRE vs TARTARUGA");
@@ -178,6 +272,7 @@ Menu()
 	{
 		case '1':
 		{
+			NovoJogo();
 			break;
 		}
 		case '2':
@@ -208,3 +303,5 @@ int main()
 	
 	return 0;
 }
+
+
