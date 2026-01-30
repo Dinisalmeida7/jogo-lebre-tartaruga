@@ -1,4 +1,7 @@
 ﻿  Jogo.c
-C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(118,24): warning C4033: 'BaralharBaralho' must return a value
-C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(152,3): warning C4033: 'abrirFicheiroler' must return a value
+C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(61,3): warning C4033: 'lerFicheiro' must return a value
+C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(784,11): warning C4047: 'function': 'char *' differs in levels of indirection from 'char (*)[81]'
+C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(784,11): warning C4024: 'RemoverC': different types for formal and actual parameter 1
+C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(785,11): warning C4047: 'function': 'char *' differs in levels of indirection from 'char (*)[81]'
+C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\Jogo.c(785,11): warning C4024: 'RemoverC': different types for formal and actual parameter 1
   Jogo_LebreTartaruga.vcxproj -> C:\Users\dmalm\Documents\utad\Projetos\Jogo_LebreTataruga\Jogo_LebreTartaruga\x64\Debug\Jogo_LebreTartaruga.exe

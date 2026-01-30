@@ -49,15 +49,28 @@ typedef struct BOT
 	int pontos;
 	char jogar;
 }jogadorNH;
+Personagem pista[PISTA_TAMANHO];
 
-void EI()//ecra inicial
+lerFicheiro(const char* filename)
 {
-	setColor(MY_COLOR_DARK_RED, MY_COLOR_BLACK);
-	setFullScreen(true);
-	gotoxy(35, 8); printf("Bem vindo ao jogo da Lebre e da Tartaruga\n");
-	gotoxy(43, 9); printf("feito por: Dinis Almeida\n");
-	system("pause");
+	FILE* file = fopen(filename, "r");
+
+	// Verificar se abriu com sucesso
+	if (file == NULL) {
+		printf("Erro ao abrir o ficheiro!\n");
+		return;
+	}
+
+	// Ler do ficheiro
+	char linha[256];
+	while (fgets(linha, sizeof(linha), file) != NULL) {
+		printf("%s", linha);
+	}
+
+	// Fechar o ficheiro
+	fclose(file);
 }
+
 
 void IniB(baralho* myB)
 {
@@ -121,41 +134,16 @@ void IniB(baralho* myB)
 		}
 	}
 }
-void BaralharBaralho(baralho* myB)
+void IniP()
 {
-	int i;
-	if (myB->size == 0) { return; }
-	for (i = 0; i < myB->size; i++)
+	for (int i = 0; i < PISTA_TAMANHO; i++)
 	{
-		trocaChars(&(myB->cartas[i]), &(myB->cartas[rand() % myB->size]));
+		pista[i].tipo = ' ';
+		pista[i].posicao = i + 1;
+		pista[i].podio = 0;
 	}
-}
-void BaralharApostaI(baralho* myB)
-{
-	int i;
-	myB->size = 5;
-	if (myB->size == 0) { return; }
-	for (i = 0; i < myB->size; i++)
-	{
-		trocaChars(&(myB->a[i]), &(myB->a[rand() % myB->size]));
-	}
-}
-void PrintB(baralho myB)
-{
-	int i = 0;
-	for (i = 0; i < 81; i++)//81---> myB.size
-	{
-		printf("%c,", myB.cartas[i]);
-	}
-	printf("\n");
-}
-void PrintBA(baralho myB)
-{
-	int i = 0;
-	for (i = 0; i < 5; i++)//81---> myB.size
-	{
-		printf(" %c", myB.a[i]);
-	}
+	pista[0].tipo = 'S';
+	pista[PISTA_TAMANHO - 1].tipo = 'F';
 }
 void IniJ1(jogadorH* j1, baralho* myB)
 {
@@ -214,6 +202,124 @@ void IniJ2(jogadorH* j1, jogadorNH* j2, baralho* myB)
 
 
 }
+
+void BaralharBaralho(baralho* myB)
+{
+	int i;
+	if (myB->size == 0) { return; }
+	for (i = 0; i < myB->size; i++)
+	{
+		trocaChars(&(myB->cartas[i]), &(myB->cartas[rand() % myB->size]));
+	}
+}
+void BaralharApostaI(baralho* myB)
+{
+	int i;
+	myB->size = 5;
+	if (myB->size == 0) { return; }
+	for (i = 0; i < myB->size; i++)
+	{
+		trocaChars(&(myB->a[i]), &(myB->a[rand() % myB->size]));
+	}
+}
+
+
+void PrintB(baralho myB)
+{
+	int i = 0;
+	for (i = 0; i < 81; i++)//81---> myB.size
+	{
+		printf("%c,", myB.cartas[i]);
+	}
+	printf("\n");
+}
+void PrintBA(baralho myB)
+{
+	int i = 0;
+	for (i = 0; i < 5; i++)//81---> myB.size
+	{
+		printf(" %c", myB.a[i]);
+	}
+}
+void PrintCApostaI(jogadorH j1)
+{
+	printf("\n%s cartas na mão: ", j1.name);
+	for (int i = 0; i < 7; i++)
+	{
+		if (i == 6)
+		{
+			printf("%c ", j1.mao.cartas[i]);
+		}
+		else
+		{
+			printf("%c, ", j1.mao.cartas[i]);
+		}
+	}
+	printf("\n");
+}
+void PrintCMparaJogar(jogadorH j1)
+{
+	printf("\n%s cartas na mão: ", j1.name);
+	for (int i = 0; i < 6; i++)
+	{
+		if (i == 5)
+		{
+			printf("%c ", j1.mao.cartas[i]);
+		}
+		else
+		{
+			printf("%c, ", j1.mao.cartas[i]);
+		}
+	}
+	printf("\n");
+	printf("Cartas de aposta: %c, %c", j1.apostas.apostaF, j1.apostas.apostaI);
+}
+void PrintCMparaJogarBot(jogadorNH j2) {
+	printf("\n%s cartas na mão: ", j2.name);
+	for (int i = 0; i < 6; i++)
+	{
+		if (i == 5)
+		{
+			printf("%c ", j2.mao.cartas[i]);
+		}
+		else
+		{
+			printf("%c, ", j2.mao.cartas[i]);
+		}
+	}
+	printf("\n");
+	printf("Cartas de aposta: %c, %c", j2.apostas.apostaF, j2.apostas.apostaI);
+}
+void PrintP()
+{
+
+	for (int i = 0; i < PISTA_TAMANHO; i++)
+	{
+		if (pista[i].podio)
+		{
+			printf("%c ", pista[i].tipo);
+		}
+		else if (pista[i].tipo == ' ')
+		{
+			printf("|----| ");
+		}
+		else
+		{
+			if (i < PISTA_TAMANHO - 1 && pista[i].tipo == pista[i + 1].tipo)
+			{
+				printf("%c%c ", pista[i].tipo, pista[i + 1].tipo);
+				i++;  // Pula para a próxima posição para evitar impressão duplicada
+			}
+			else
+			{
+				printf("%c ", pista[i].tipo);
+			}
+		}
+	}
+	printf("\n");
+}
+
+
 void RemoverC(char vetor[], int tamanho, char carta)
 {
 	int i, j;
@@ -230,14 +336,28 @@ void RemoverC(char vetor[], int tamanho, char carta)
 		}
 	}
 }
-bool CartaM(char mao[], int tamanhoMao, char cartaProcurada) {
-	for (int i = 0; i < tamanhoMao; i++) {
-		if (mao[i] == cartaProcurada) {
-			return true;
+jogadorH RemoverCM(char carta, int quantidade, jogadorH* j1)
+{
+
+	int removidas = 0;
+	for (int j = 0; j < j1->mao.size; j++)
+	{
+		if (carta == j1->mao.cartas[j])
+		{
+			j1->mao.cartas[j] = 'x';
+			removidas++;
+
+			if (removidas == quantidade)
+			{
+				break;  // Sai do loop se o número desejado de cartas iguais foi removido
+			}
 		}
 	}
-	return false;
+
+	return *j1;
 }
+
+
 void apostaFJ(jogadorH* myJ) {
 	int i;
 	int escolha;
@@ -278,26 +398,7 @@ Baposta ColocarCB(char carta, Baposta aposta)
 
 	return aposta;
 }
-jogadorH RemoverCM(char carta, int quantidade, jogadorH* j1)
-{
 
-	int removidas = 0;
-	for (int j = 0; j < j1->mao.size; j++)
-	{
-		if (carta == j1->mao.cartas[j])
-		{
-			j1->mao.cartas[j] = 'x';
-			removidas++;
-
-			if (removidas == quantidade)
-			{
-				break;  // Sai do loop se o número desejado de cartas iguais foi removido
-			}
-		}
-	}
-
-	return *j1;
-}
 int ContarCM(char carta, jogadorH* j1)
 {
 	int contador = 0;
@@ -309,6 +410,14 @@ int ContarCM(char carta, jogadorH* j1)
 		}
 	}
 	return contador;
+}
+bool CartaM(char mao[], int tamanhoMao, char cartaProcurada) {
+	for (int i = 0; i < tamanhoMao; i++) {
+		if (mao[i] == cartaProcurada) {
+			return true;
+		}
+	}
+	return false;
 }
 void EscolherCJ(jogadorH* j1, baralho* myB, Baposta aposta)
 {
@@ -411,95 +520,10 @@ void EscolherCJ(jogadorH* j1, baralho* myB, Baposta aposta)
 		}
 	} while (verdadeiro != 1);
 }
-void PrintCApostaI(jogadorH j1)
-{
-	printf("\n%s cartas na mão: ", j1.name);
-	for (int i = 0; i < 7; i++)
-	{
-		if (i == 6)
-		{
-			printf("%c ", j1.mao.cartas[i]);
-		}
-		else
-		{
-			printf("%c, ", j1.mao.cartas[i]);
-		}
-	}
-	printf("\n");
-}
-void PrintCMparaJogar(jogadorH j1)
-{
-	printf("\n%s cartas na mão: ", j1.name);
-	for (int i = 0; i < 6; i++)
-	{
-		if (i == 5)
-		{
-			printf("%c ", j1.mao.cartas[i]);
-		}
-		else
-		{
-			printf("%c, ", j1.mao.cartas[i]);
-		}
-	}
-	printf("\n");
-	printf("Cartas de aposta: %c, %c", j1.apostas.apostaF, j1.apostas.apostaI);
-}
-void PrintCMparaJogarBot(jogadorNH j2) {
-	printf("\n%s cartas na mão: ", j2.name);
-	for (int i = 0; i < 6; i++)
-	{
-		if (i == 5)
-		{
-			printf("%c ", j2.mao.cartas[i]);
-		}
-		else
-		{
-			printf("%c, ", j2.mao.cartas[i]);
-		}
-	}
-	printf("\n");
-	printf("Cartas de aposta: %c, %c", j2.apostas.apostaF, j2.apostas.apostaI);
-}
-Personagem pista[PISTA_TAMANHO];
-void IniP()
-{
-	for (int i = 0; i < PISTA_TAMANHO; i++)
-	{
-		pista[i].tipo = ' ';
-		pista[i].posicao = i + 1;
-		pista[i].podio = 0;
-	}
-	pista[0].tipo = 'S';
-	pista[PISTA_TAMANHO - 1].tipo = 'F';
-}
-void PrintP()
-{
 
-	for (int i = 0; i < PISTA_TAMANHO; i++)
-	{
-		if (pista[i].podio)
-		{
-			printf("%c ", pista[i].tipo);
-		}
-		else if (pista[i].tipo == ' ')
-		{
-			printf("|----| ");
-		}
-		else
-		{
-			if (i < PISTA_TAMANHO - 1 && pista[i].tipo == pista[i + 1].tipo)
-			{
-				printf("%c%c ", pista[i].tipo, pista[i + 1].tipo);
-				i++;  // Pula para a próxima posição para evitar impressão duplicada
-			}
-			else
-			{
-				printf("%c ", pista[i].tipo);
-			}
-		}
-	}
-	printf("\n");
-}
+
+
+Personagem pista[PISTA_TAMANHO];
 void MoverPersagem(jogadorH* j1, Baposta* aposta)
 {
 
@@ -729,20 +753,31 @@ void contarcartas(baralho myBplay, int contagem[])
 		}
 	}
 }
+
+
+
+
 void NJ()
 {
 	baralho myB;
 	jogadorH j1;
 	jogadorNH j2;
 	Baposta aposta = { .size = 0,.maxsize = 8 };
+
+
+
 	IniB(&myB);
-	BaralharBaralho(&myB);
-	BaralharApostaI(&myB);
+	IniP();
+	
+
 	IniJ1(&j1, &myB);
 	system("cls");
 	IniJ2(&j1, &j2, &myB);
 	system("cls");
 
+	BaralharBaralho(&myB);
+	BaralharApostaI(&myB);
+	
 	PrintCApostaI(j1);
 	apostaFJ(&j1);
 	ApostaFBot(&j2, &myB);
@@ -752,7 +787,6 @@ void NJ()
 	PrintCMparaJogarBot(j2);
 	system("cls");
 
-	IniP();
 	PrintP();
 	system("pause");
 
@@ -767,6 +801,19 @@ void NJ()
 	PrintP();
 }
 
+//ecra inicial
+void EI()
+{
+	setColor(MY_COLOR_LIGTH_GREEN, MY_COLOR_BLACK);
+	showRectAt(41, 7, 35, 6);
+	gotoxy(50, 9);
+	printf("LEBRE vs TARTARUGA");
+	gotoxy(46, 11);
+	printf("Jogo de Apostas e Corridas\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	printf("Feito por: Dinis Almeida\n");
+	system("pause");
+}
+
 void menu()
 {
 	char opc;
@@ -774,32 +821,35 @@ void menu()
 	{
 		system("cls");
 		gotoxy(10, 8); printf("Menu");
-		gotoxy(10, 10); printf("a- Novo Jogo");
-		gotoxy(10, 11); printf("b- Continuar jogo");
-		gotoxy(10, 12); printf("c- Regras de jogo");
-		gotoxy(10, 13); printf("d- Sair");
+		gotoxy(10, 10); printf("1- Novo Jogo");
+		gotoxy(10, 11); printf("2- Continuar jogo");
+		gotoxy(10, 12); printf("3- Regras de jogo");
+		gotoxy(10, 13); printf("4- Sair");
 		gotoxy(10, 15); printf("Escolha uma opção:"); (void)scanf(" %c", &opc);
-	} while (opc != 'a' && opc != 'b' && opc != 'c' && opc != 'd');
+	} while (opc != '1' && opc != '2' && opc != '3' && opc != '4');
 	system("cls");
 	switch (opc)
 	{
-	case 'a':
+	case '1':
 	{
 		system("cls");
 		NJ();
 		break;
 	}
-	case 'b':
+	case '2':
 	{
 
 		break;
 	}
-	case 'c':
+	case '3':
 	{
 
+		lerFicheiro("regras.txt");
+		system("pause");
+		menu();
 		break;
 	}
-	case 'd':
+	case '4':
 	{
 		gotoxy(50, 8); printf("A sair do jogo\n");
 		break;
